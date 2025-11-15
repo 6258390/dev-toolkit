@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process';
-import { chmodSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { chmodSync, cpSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { cli } from './index.js';
@@ -10,8 +10,7 @@ cli
   .description('Run linter on codebase')
   .option('--fix', 'Auto-fix linting errors')
   .action(async (options, ctx) => {
-    await ctx.task('Running linter with auto-fix', async () => ctx.spawn('npm', ['run', 'lint:fix']), { skip: !options.fix });
-    await ctx.task('Checking lint errors', async () => ctx.spawn('npm', ['run', 'lint']));
+    await ctx.spawn('npx', ['eslint', '.', ...(options.fix ? ['--fix'] : [])], { stdio: 'inherit' });
   });
 
 cli

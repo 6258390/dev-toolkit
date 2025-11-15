@@ -1,6 +1,6 @@
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 
 _applyPatches(_loadPatches());
 

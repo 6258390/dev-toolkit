@@ -28,7 +28,7 @@ function _createCLI() {
         try {
           await fn(options, _createContext(listr, null, options));
           if (listr.tasks.length > 0) await listr.run();
-        } catch (err) { process.exit(1); }
+        } catch { process.exit(1); }
       });
     };
     return cmd;
@@ -81,7 +81,7 @@ function _createContext(listr, currentTask, options) {
           writeFileSync(tmpFile, output);
           setOutput([`code: ${code}`, `command: ${cmd} ${args.join(' ')}`, `cwd: ${spawnOpts.cwd || process.cwd()}`, `log_file: ${tmpFile}`]);
           reject(new Error(`Process exited with code ${code}`));
-        } else if (!onLine) resolve();
+        } else if (!onLine) {resolve();}
       });
       // Spawn errors (ENOENT, etc): show error details without tmp file
       proc.on('error', (err) => {

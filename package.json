@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "commander": "^14.0.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-import": "^2.32.0",
     "listr2": "^9.0.5"
   }
 }
