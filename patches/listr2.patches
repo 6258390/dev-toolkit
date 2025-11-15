@@ -1,0 +1,9 @@
+=== listr2/dist/index.js ===
+--- class DefaultRenderer {
++++ class DefaultRenderer { hasAnyNestedFailedSubtasks(task) { if (!task.hasSubtasks()) return false; for (const subtask of task.subtasks) { if (subtask.hasFailed()) return true; if (this.hasAnyNestedFailedSubtasks(subtask)) return true; } return false; }
+
+--- task.isCompleted() && task.subtasks.some((subtask) => subtask.hasFailed())
++++ task.isCompleted() && this.hasAnyNestedFailedSubtasks(task)
+
+--- task.subtasks.some((subtask) => subtask.hasFailed()) || task.subtasks.some((subtask) => subtask.hasRolledBack())
++++ this.hasAnyNestedFailedSubtasks(task) || task.subtasks.some((subtask) => subtask.hasRolledBack())

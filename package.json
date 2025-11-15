@@ -2,6 +2,9 @@
   "name": "dev-toolkit",
   "version": "1.0.0",
   "type": "module",
+  "bin": {
+    "dev-toolkit": "./dev-toolkit.js"
+  },
   "exports": {
     ".": "./index.js",
     "./patches.js": "./patches.js"

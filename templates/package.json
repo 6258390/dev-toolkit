@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "prepare": "dev-toolkit prepare"
+  },
+  "devDependencies": {
+    "dev-toolkit": "github:6258390/dev-toolkit"
+  }
+}

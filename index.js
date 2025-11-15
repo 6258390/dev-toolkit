@@ -1,9 +1,10 @@
-import { Command } from 'commander';
-import { Listr } from 'listr2';
-import { spawn as spawnProcess } from 'child_process';
-import { mkdtempSync, writeFileSync } from 'fs';
-import { tmpdir } from 'os';
-import { join } from 'path';
+import './patches.js';
+const { Command } = await import('commander');
+const { Listr } = await import('listr2');
+const { spawn: spawnProcess } = await import('child_process');
+const { mkdtempSync, writeFileSync } = await import('fs');
+const { tmpdir } = await import('os');
+const { join } = await import('path');
 
 export const cli = _createCLI();
 

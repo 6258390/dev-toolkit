@@ -33,7 +33,35 @@ function _createCLI() {}
 function _createContext() {}
 ```
 
-## 6. Code Compression
+## 6. Helper Functions Placement
+Place helper functions inside the scope where they're used, below usage with `// Implementation` comment.
+```js
+// Good - Helper functions inside scope
+cli
+  .command('publish')
+  .action(async (options, ctx) => {
+    // Usage first
+    await ctx.task('Publishing packages', _publishFromDir('packages'));
+    await ctx.task('Publishing templates', _publishFromDir('templates', true));
+
+    // Implementation
+    function _readJson(path) {
+      return JSON.parse(readFileSync(path, 'utf-8'));
+    }
+
+    function _publishFromDir(dirName, renameGitignore = false) {
+      return async (ctx) => { /* ... */ };
+    }
+  });
+
+// Bad - Helper functions at top level
+const _readJson = (path) => JSON.parse(readFileSync(path, 'utf-8'));
+cli.command('publish').action(async (options, ctx) => {
+  await ctx.task('Publishing packages', _publishFromDir('packages'));
+});
+```
+
+## 7. Code Compression
 - **One-liner**: Simple logic on single line
   ```js
   // Good
@@ -63,7 +91,7 @@ function _createContext() {}
   const handleData = (data) => { ... };
   ```
 
-## 7. TypeScript Definition Files (.d.ts)
+## 8. TypeScript Definition Files (.d.ts)
 
 - **Inline simple types**: Inline option types directly into method signatures
   ```ts
