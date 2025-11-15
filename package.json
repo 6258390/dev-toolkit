@@ -1,0 +1,13 @@
+{
+  "name": "dev-toolkit",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./patches.js": "./patches.js"
+  },
+  "dependencies": {
+    "commander": "^14.0.2",
+    "listr2": "^9.0.5"
+  }
+}
