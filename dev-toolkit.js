@@ -128,7 +128,8 @@ cli
 
       for (const item of readdirSync(templateDir)) {
         const sourcePath = join(templateDir, item);
-        const targetPath = join(targetDir, item);
+        const targetName = item === 'gitignore' ? '.gitignore' : item;
+        const targetPath = join(targetDir, targetName);
         cpSync(sourcePath, targetPath, { recursive: true });
       }
 
