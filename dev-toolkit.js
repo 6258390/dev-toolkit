@@ -118,6 +118,10 @@ cli
   .command('init')
   .description('Initialize monorepo structure in current directory')
   .action(async (options, ctx) => {
+    await ctx.task('Initializing git repository', async () => {
+      await ctx.spawn('git', ['init']);
+    });
+
     await ctx.task('Copying template files', async (ctx) => {
       const templateDir = join(dirname(fileURLToPath(import.meta.url)), 'templates');
       const targetDir = process.cwd();
