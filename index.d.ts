@@ -25,6 +25,12 @@ export interface CLIContext {
   title(newTitle: string): void;
   /** Log message to current task output. */
   log(message: string): void;
+  /** Prompt user with select (dropdown). Can only be called within a task. */
+  select<T = string>(options: { message: string; choices: Array<{ name?: string; value: T; description?: string } | { type: 'separator'; separator?: string }>; default?: T }): Promise<T>;
+  /** Prompt user with text input. Can only be called within a task. */
+  input(options: { message: string; default?: string; required?: boolean; validate?: (value: string) => boolean | string | Promise<boolean | string> }): Promise<string>;
+  /** Generic prompt function. Can only be called within a task. */
+  prompt<T = any>(promptFn: (options: any) => Promise<T>, options: any): Promise<T>;
 }
 
 /** Extended Command with CLIContext support. */

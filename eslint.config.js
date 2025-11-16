@@ -13,8 +13,8 @@ export default [
         process: 'readonly',
         Buffer: 'readonly',
         __dirname: 'readonly',
-        __filename: 'readonly'
-      }
+        __filename: 'readonly',
+      },
     },
     plugins: {
       import: importPlugin,
@@ -26,21 +26,21 @@ export default [
               type: 'problem',
               docs: {
                 description: 'Disallow arrow functions with underscore prefix',
-                category: 'Stylistic Issues'
+                category: 'Stylistic Issues',
               },
               messages: {
-                noUnderscoreArrow: 'Arrow functions should not use underscore prefix. Use function declarations instead: function {{name}}() { ... }'
+                noUnderscoreArrow: 'Arrow functions should not use underscore prefix. Use function declarations instead: function {{name}}() { ... }',
               },
-              schema: []
+              schema: [],
             },
             create(context) {
               return {
                 VariableDeclarator(node) {
                   // Check: const _name = () => {}
                   if (node.id.type === 'Identifier' && node.id.name.startsWith('_') && node.init && (node.init.type === 'ArrowFunctionExpression' || node.init.type === 'FunctionExpression')) context.report({ node: node.id, messageId: 'noUnderscoreArrow', data: { name: node.id.name } });
-                }
+                },
               };
-            }
+            },
           },
 
           // Rule 2: Enforce single // Implementation comment after all export statements
@@ -49,14 +49,14 @@ export default [
               type: 'problem',
               docs: {
                 description: 'Require exactly one // Implementation comment after export statements and before function definitions',
-                category: 'Stylistic Issues'
+                category: 'Stylistic Issues',
               },
               messages: {
                 missingComment: 'Missing "// Implementation" comment. Add one comment after all exports and before function definitions.',
                 multipleComments: 'Only one "// Implementation" comment allowed per file. Found {{count}} comments.',
-                wrongPosition: '"// Implementation" comment must be placed after all exports and before first function definition.'
+                wrongPosition: '"// Implementation" comment must be placed after all exports and before first function definition.',
               },
-              schema: []
+              schema: [],
             },
             create(context) {
               const sourceCode = context.sourceCode || context.getSourceCode();
@@ -80,9 +80,9 @@ export default [
                   const afterExports = !lastExport || comment.range[0] > lastExport.range[1];
                   const beforeFunctions = comment.range[0] < firstFunction.range[0];
                   if (!afterExports || !beforeFunctions) context.report({ node: comment, messageId: 'wrongPosition' });
-                }
+                },
               };
-            }
+            },
           },
 
           // Rule 3: Block export default with _ prefix functions
@@ -91,12 +91,12 @@ export default [
               type: 'problem',
               docs: {
                 description: 'Disallow exporting functions with underscore prefix using export default',
-                category: 'Stylistic Issues'
+                category: 'Stylistic Issues',
               },
               messages: {
-                noExportUnderscore: 'Do not export functions with underscore prefix. Use "export const name = {{name}}()" pattern instead.'
+                noExportUnderscore: 'Do not export functions with underscore prefix. Use "export const name = {{name}}()" pattern instead.',
               },
-              schema: []
+              schema: [],
             },
             create(context) {
               return {
@@ -109,9 +109,9 @@ export default [
                   // Check: export default function _name() {}
                   else if (node.declaration.type === 'FunctionDeclaration' && node.declaration.id && node.declaration.id.name.startsWith('_')) functionName = node.declaration.id.name;
                   if (functionName) context.report({ node, messageId: 'noExportUnderscore', data: { name: functionName } });
-                }
+                },
               };
-            }
+            },
           },
 
           // Rule 4: Require underscore prefix for all top-level function declarations
@@ -120,12 +120,12 @@ export default [
               type: 'problem',
               docs: {
                 description: 'Require underscore prefix for all top-level function declarations',
-                category: 'Stylistic Issues'
+                category: 'Stylistic Issues',
               },
               messages: {
-                missingUnderscore: 'Function "{{name}}" must have underscore prefix. Use: function _{{name}}() { ... }'
+                missingUnderscore: 'Function "{{name}}" must have underscore prefix. Use: function _{{name}}() { ... }',
               },
-              schema: []
+              schema: [],
             },
             create(context) {
               return {
@@ -134,9 +134,9 @@ export default [
                   topLevelFunctions.forEach(funcNode => {
                     if (!funcNode.id.name.startsWith('_')) context.report({ node: funcNode.id, messageId: 'missingUnderscore', data: { name: funcNode.id.name } });
                   });
-                }
+                },
               };
-            }
+            },
           },
 
           // Rule 5: Enforce export const pattern with _ function call
@@ -145,13 +145,13 @@ export default [
               type: 'problem',
               docs: {
                 description: 'Enforce export const x = _fn() pattern',
-                category: 'Stylistic Issues'
+                category: 'Stylistic Issues',
               },
               messages: {
                 notCallExpression: 'Export "{{name}}" must call a function. Use: export const {{name}} = _functionName();',
-                notUnderscoreFunction: 'Export "{{name}}" must call a function with underscore prefix. Use: export const {{name}} = _functionName();'
+                notUnderscoreFunction: 'Export "{{name}}" must call a function with underscore prefix. Use: export const {{name}} = _functionName();',
               },
-              schema: []
+              schema: [],
             },
             create(context) {
               return {
@@ -162,19 +162,25 @@ export default [
                     if (declarator.init.type !== 'CallExpression') return context.report({ node: declarator.id, messageId: 'notCallExpression', data: { name: declarator.id.name } });
                     if (declarator.init.callee.type === 'Identifier' && !declarator.init.callee.name.startsWith('_')) context.report({ node: declarator.id, messageId: 'notUnderscoreFunction', data: { name: declarator.id.name } });
                   });
-                }
+                },
               };
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     },
     rules: {
+      // Code style
+      'quotes': ['error', 'single'],
+      'indent': ['error', 2],
+      'semi': ['error', 'always'],
+      'comma-dangle': ['error', 'always-multiline'],
+
       // Import sorting (alphabetical)
       'import/order': ['error', {
         'alphabetize': {
           'order': 'asc',
-          'caseInsensitive': true
+          'caseInsensitive': true,
         },
         'groups': [
           'builtin',
@@ -182,9 +188,10 @@ export default [
           'internal',
           'parent',
           'sibling',
-          'index'
-        ]
+          'index',
+        ],
       }],
+      'import/no-unresolved': 0,
 
       // Curly braces - never for single statements
       'curly': ['error', 'multi-or-nest', 'consistent'],
@@ -195,7 +202,7 @@ export default [
       'local-rules/implementation-comment': 'error',
       'local-rules/no-export-underscore': 'error',
       'local-rules/require-underscore-prefix': 'error',
-      'local-rules/export-pattern': 'error'
-    }
-  }
+      'local-rules/export-pattern': 'error',
+    },
+  },
 ];

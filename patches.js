@@ -8,7 +8,7 @@ _applyPatches(_loadPatches());
 function _loadPatches() {
   const dirs = [join(dirname(fileURLToPath(import.meta.url)), 'patches'), join(process.cwd(), 'patches')];
   return dirs.filter(existsSync).flatMap(dir =>
-    readdirSync(dir).filter(f => f.endsWith('.patches')).map(file => _parsePatchFile(join(dir, file)))
+    readdirSync(dir).filter(f => f.endsWith('.patches')).map(file => _parsePatchFile(join(dir, file))),
   ).reduce((all, patches) => ({ ...all, ...patches }), {});
 }
 

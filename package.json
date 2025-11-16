@@ -10,6 +10,8 @@
     "./patches.js": "./patches.js"
   },
   "dependencies": {
+    "@inquirer/prompts": "^7.10.1",
+    "@listr2/prompt-adapter-inquirer": "^3.0.5",
     "commander": "^14.0.2",
     "eslint": "^9.39.1",
     "eslint-plugin-import": "^2.32.0",
